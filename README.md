@@ -6,10 +6,13 @@
 [![Step 1: Core Blueprint](https://img.shields.io/badge/Step%201-Verified%20%E2%9C%85-emerald)](#)
 [![Step 2: Database & Schemas](https://img.shields.io/badge/Step%202-Verified%20%E2%9C%85-emerald)](#)
 [![Step 3: AI/ML Services & REST API](https://img.shields.io/badge/Step%203-Verified%20%E2%9C%85-emerald)](#)
+[![Step 4: Next.js Frontend & UI](https://img.shields.io/badge/Step%204-Verified%20%E2%9C%85-emerald)](#)
 [![Python 3.12](https://img.shields.io/badge/Python-3.12%2B-blue)](#)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688)](#)
-[![Librosa DSP](https://img.shields.io/badge/Audio-Librosa%200.10%2B-orange)](#)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16%20App%20Router-black)](#)
+[![React 19](https://img.shields.io/badge/React-19.3%2B-61dafb)](#)
+[![Chart.js](https://img.shields.io/badge/Charts-Chart.js%204.5%2B-ff6384)](#)
+[![Librosa DSP](https://img.shields.io/badge/Audio-Librosa%200.10%2B-orange)](#)
 [![SQLAlchemy 2.0](https://img.shields.io/badge/SQLAlchemy-2.0%2B-red)](#)
 [![Pydantic v2](https://img.shields.io/badge/Pydantic-v2.6%2B-e92063)](#)
 [![Clerk Auth](https://img.shields.io/badge/Auth-Clerk%20JWKS%20RS256-purple)](#)
@@ -70,6 +73,7 @@ TraumaSense_AI/
 ├── step1_verification_report.md          # Step 1 100% verification audit report
 ├── step2_verification_report.md          # Step 2 100% verification audit report
 ├── step3_verification_report.md          # Step 3 100% verification audit report
+├── step4_verification_report.md          # Step 4 100% verification audit report
 ├── backend/
 │   ├── .env                              # Backend environment
 │   ├── .env.example                      # Backend environment template
@@ -114,21 +118,42 @@ TraumaSense_AI/
 │   │   ├── test_clerk_auth.py            # Clerk JWKS key inspection tests
 │   │   ├── test_api_health.py            # System health & diagnostic API tests
 │   │   ├── test_step3_services_and_api.py # Pytest integration suite for Step 3 ML & API
+│   │   ├── test_step4_frontend_integration.py # Pytest integration suite for Step 4 Contracts
 │   │   ├── verify_step1.py               # Automated Step 1 verification suite
 │   │   ├── verify_step2.py               # Automated Step 2 verification suite
-│   │   └── verify_step3.py               # Automated Step 3 verification suite
+│   │   ├── verify_step3.py               # Automated Step 3 verification suite
+│   │   └── verify_step4.py               # Automated Step 4 verification suite
 │   └── uploads/
 │       └── audio/                        # Local fallback audio storage (.gitkeep)
 └── frontend/
     ├── .env.example                      # Frontend environment template
     ├── .env.local                        # Frontend local environment
     ├── Dockerfile                        # Multi-stage Next.js production build
-    ├── package.json                      # Next.js 16, React 19, @clerk/nextjs
+    ├── package.json                      # Next.js 16, React 19, Chart.js, Clerk, Axios
     └── src/
         ├── middleware.ts                 # Clerk authentication proxy middleware
+        ├── lib/
+        │   ├── api.ts                    # Axios API client & typed schema interfaces
+        │   └── supabase.ts               # Safe Supabase browser client
+        ├── components/
+        │   ├── Navbar.tsx                # Dark glassmorphic navigation header
+        │   ├── AudioRecorder.tsx         # Web Audio API waveform & 16kHz WAV generator
+        │   ├── SviGauge.tsx              # Dynamic SVG radial arc SVI gauge (0-100)
+        │   ├── ShapVisualizer.tsx        # Explainable AI token attribution visualizer
+        │   ├── AlertBanner.tsx           # Emergency intervention banner
+        │   └── Charts/
+        │       ├── EmotionRadarChart.tsx # 6-axis Radar affect chart
+        │       ├── RiskDistributionBar.tsx # SVI risk tier breakdown doughnut
+        │       └── StateMetricsMap.tsx   # Geographic case volume bar chart & ranked table
         └── app/
             ├── layout.tsx                # Root layout wrapped in <ClerkProvider>
-            └── page.tsx                  # Architecture blueprint dashboard
+            ├── page.tsx                  # Command landing page with dual pathways
+            ├── portal/
+            │   ├── page.tsx              # Multi-modal victim distress reporting portal
+            │   └── history/
+            │       └── page.tsx          # Case history & status tracker
+            └── admin/
+                └── page.tsx              # Officer triage & emergency dispatch dashboard
 ```
 
 ---
@@ -283,6 +308,28 @@ docker-compose up --build
 
 ---
 
+## 💻 Step 4: Next.js 15 Frontend & Explainable UI Suite
+
+### 1. Architectural Highlights
+- **Framework**: Next.js 16 (App Router) + React 19 + Tailwind CSS + Lucide React + Chart.js.
+- **Glassmorphic Navigation (`Navbar.tsx`)**: Dark glass aesthetic with emergency helpline badges (`112 Emergency`, `181 Women`, `1098 Childline`, `14416 Tele-MANAS`) and Clerk authentication.
+- **Live Web Audio Recorder with Canvas Waveform (`AudioRecorder.tsx`)**: Web Audio API `AnalyserNode` real-time animated waveform with 1-click in-memory 16kHz PCM WAV synthesis for microphone-free testing.
+- **Radial Arc SVI Gauge (`SviGauge.tsx`)**: Dynamic 240° SVG arc visualizing `svi_score` and risk tier with pulsing crimson for `CRITICAL` cases.
+- **SHAP Token Attribution Visualizer (`ShapVisualizer.tsx`)**: Color-scaled keyword heatmap badges and horizontal relative importance impact bars.
+- **Emergency Alert Banner (`AlertBanner.tsx`)**: High-visibility emergency intervention banner with one-click phone dispatch.
+- **Chart.js Analytics Suite (`Charts/`)**:
+  - `EmotionRadarChart.tsx`: 6-axis Radar chart for `fear`, `anxiety`, `panic`, `anger`, `sadness`, and `neutral`.
+  - `RiskDistributionBar.tsx`: SVI severity breakdown doughnut chart.
+  - `StateMetricsMap.tsx`: Geographic case volume bar chart and ranked jurisdiction table.
+
+### 2. App Router Pages
+- **Command Landing Page (`/`)**: System health probe, capability architecture cards, and direct dual pathways.
+- **Multi-Modal Victim Reporting Portal (`/portal`)**: Dual-mode text & voice intake, state & language selectors, 1-click test scenarios, and deep real-time AI assessment views.
+- **Case History & Forensic Tracker (`/portal/history`)**: Filterable incident audit queue with search, risk badges, and modal inspection.
+- **Officer Triage Command Dashboard (`/admin`)**: Top KPI cards, real-time alert dispatch feed with instant acknowledgment, analytics charts, and case audit queue.
+
+---
+
 ## 🧪 Automated Verification Suites
 
 ```bash
@@ -295,7 +342,10 @@ python -m tests.verify_step2
 # Execute Step 3 verification (Librosa Acoustics, Multilingual NLP, SHAP, SVI & REST API)
 python backend/tests/verify_step3.py
 
-# Run complete pytest test suite (14/14 tests)
+# Execute Step 4 verification (Frontend Architecture, Next.js Build & API Parity)
+python backend/tests/verify_step4.py
+
+# Run complete pytest test suite (18/18 tests)
 python -m pytest backend/tests -v
 ```
 
@@ -308,5 +358,5 @@ All suites execute with **100% PASS** rates.
 - [x] **Step 1: Project Blueprint, Monorepo Workspace, Resilient DB & Clerk Auth** (Verified `✅`)
 - [x] **Step 2: Database Schema, ORM Models, Pydantic v2 Schemas & Seeding** (Verified `✅`)
 - [x] **Step 3: AI/ML Inference Services, Acoustic Biomarkers, Multilingual NLP, SHAP & REST Routers** (Verified `✅`)
-- [ ] **Step 4: Real-Time WebSockets & Emergency Alerts Dispatch Integration**
-- [ ] **Step 5: Frontend Clinical Intake, Real-Time Audio Recorder & Triage Dashboard**
+- [x] **Step 4: Next.js 15 Frontend, Victim Portal, Audio Recorder, SVI Gauge & Officer Triage Dashboard** (Verified `✅`)
+- [ ] **Step 5: Production Dockerfiles, Multi-Stage Builds & CI/CD Workflows**
