@@ -7,6 +7,7 @@
 [![Step 2: Database & Schemas](https://img.shields.io/badge/Step%202-Verified%20%E2%9C%85-emerald)](#)
 [![Step 3: AI/ML Services & REST API](https://img.shields.io/badge/Step%203-Verified%20%E2%9C%85-emerald)](#)
 [![Step 4: Next.js Frontend & UI](https://img.shields.io/badge/Step%204-Verified%20%E2%9C%85-emerald)](#)
+[![Step 5: Production Docker & CI/CD](https://img.shields.io/badge/Step%205-Verified%20%E2%9C%85-emerald)](#)
 [![Python 3.12](https://img.shields.io/badge/Python-3.12%2B-blue)](#)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688)](#)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16%20App%20Router-black)](#)
@@ -330,6 +331,27 @@ docker-compose up --build
 
 ---
 
+## 🚀 Step 5: Production Dockerization, Multi-Service Orchestration & CI/CD Pipeline
+
+### 1. Architectural Highlights
+- **Production Backend Containerization (`backend/Dockerfile`)**:
+  - Based on `python:3.11-slim` with system DSP dependencies (`libsndfile1`, `ffmpeg`, `build-essential`, `curl`).
+  - Automated entrypoint initializing relational tables, seeding default demo data, and launching Uvicorn on `0.0.0.0:8000`.
+  - Built-in `HEALTHCHECK` probing `http://localhost:8000/health`.
+- **Multi-Stage Production Frontend Containerization (`frontend/Dockerfile`)**:
+  - Based on `node:20-alpine` with 3 stages: `deps` (dependency caching with `--legacy-peer-deps`), `builder` (accepting build-time Clerk, Supabase, and API URL `ARG` variables), and `runner` (non-root `nextjs` user with automated `HEALTHCHECK` probing `http://localhost:3000`).
+- **Multi-Container Orchestration (`docker-compose.yml` & `docker-compose.prod.yml`)**:
+  - Coordinates `traumasense-backend` and `traumasense-frontend` with persistent Docker volumes for SQLite databases (`backend-sqlite-data`) and local audio files (`backend-audio-uploads`).
+  - Enforces dependency health ordering (`depends_on: traumasense-backend: { condition: service_healthy }`).
+- **Automated GitHub Actions CI/CD Pipeline (`.github/workflows/ci-cd.yml`)**:
+  - Triggered on `push` and `pull_request` to `main`.
+  - **Job 1 (`backend-test-suite`)**: Ubuntu 22.04 + Python 3.11, installs audio/DSP libraries (`libsndfile1`, `ffmpeg`), provisions database, and executes Pytest regression suite.
+  - **Job 2 (`frontend-production-build`)**: Ubuntu 22.04 + Node.js 20, installs dependencies with `--legacy-peer-deps`, injects build-time env vars, and validates Next.js 15 production compilation.
+- **Production Runbook (`INSTALLATION.md`)**:
+  - Comprehensive step-by-step installation runbook covering local native setup, one-command Docker launch, Clerk setup, and cloud deployment guides (Vercel, GCP Cloud Run, Supabase).
+
+---
+
 ## 🧪 Automated Verification Suites
 
 ```bash
@@ -345,7 +367,10 @@ python backend/tests/verify_step3.py
 # Execute Step 4 verification (Frontend Architecture, Next.js Build & API Parity)
 python backend/tests/verify_step4.py
 
-# Run complete pytest test suite (18/18 tests)
+# Execute Step 5 verification (Containerization, CI/CD, E2E Lifecycle & Master Regression)
+python backend/tests/verify_step5.py
+
+# Run complete pytest test suite (22/22 tests across all 5 steps)
 python -m pytest backend/tests -v
 ```
 
@@ -359,4 +384,5 @@ All suites execute with **100% PASS** rates.
 - [x] **Step 2: Database Schema, ORM Models, Pydantic v2 Schemas & Seeding** (Verified `✅`)
 - [x] **Step 3: AI/ML Inference Services, Acoustic Biomarkers, Multilingual NLP, SHAP & REST Routers** (Verified `✅`)
 - [x] **Step 4: Next.js 15 Frontend, Victim Portal, Audio Recorder, SVI Gauge & Officer Triage Dashboard** (Verified `✅`)
-- [ ] **Step 5: Production Dockerfiles, Multi-Stage Builds & CI/CD Workflows**
+- [x] **Step 5: Production Dockerfiles, Multi-Stage Builds, GitHub Actions CI/CD & Production Runbook** (Verified `✅`)
+
