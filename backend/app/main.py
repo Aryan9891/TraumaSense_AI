@@ -65,6 +65,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Register Step 3 Feature Routers under /api
+from app.routers import (
+    auth_router,
+    complaints_router,
+    analytics_router,
+    alerts_router,
+)
+
+app.include_router(auth_router, prefix="/api")
+app.include_router(complaints_router, prefix="/api")
+app.include_router(analytics_router, prefix="/api")
+app.include_router(alerts_router, prefix="/api")
+
 
 @app.get("/", tags=["Blueprint"])
 async def root():

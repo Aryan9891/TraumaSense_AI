@@ -27,6 +27,8 @@ from app.schemas.core import (
     AlertCreate,
     AlertUpdate,
     AlertResponse,
+    ComplaintSummary,
+    AlertDetailResponse,
     ComplaintBase,
     ComplaintCreateText,
     ComplaintResponse,

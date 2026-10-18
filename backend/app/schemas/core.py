@@ -5,7 +5,7 @@ for bidirectional serialization with SQLAlchemy models.
 """
 
 from datetime import datetime
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Any
 from pydantic import BaseModel, Field, ConfigDict
 from app.models.core import (
     UserRole,
@@ -213,6 +213,23 @@ class AlertResponse(AlertBase):
     model_config = ConfigDict(from_attributes=True)
 
 
+class ComplaintSummary(BaseModel):
+    id: str
+    title: str
+    language: str
+    state_location: str
+    status: ComplaintStatus
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class AlertDetailResponse(AlertResponse):
+    complaint: Optional[ComplaintSummary] = None
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 # ==============================================================================
 # Complaint Schemas
 # ==============================================================================
@@ -276,8 +293,16 @@ class DashboardAnalyticsResponse(BaseModel):
     """Aggregated clinical and operational dashboard analytics."""
 
     total_complaints: int
-    risk_distribution: Dict[str, int]
-    state_distribution: Dict[str, int]
-    open_alerts_count: int
-    average_svi_score: float
-    status_distribution: Dict[str, int]
+    active_cases: int = 0
+    high_risk_alerts: int = 0
+    critical_risk_alerts: int = 0
+    open_alerts_count: int = 0
+    average_svi_score: float = 0.0
+    state_wise_stats: Dict[str, int] = Field(default_factory=dict)
+    state_distribution: Dict[str, int] = Field(default_factory=dict)
+    risk_distribution: Dict[str, int] = Field(default_factory=dict)
+    emotion_distribution: Dict[str, float] = Field(default_factory=dict)
+    status_distribution: Dict[str, int] = Field(default_factory=dict)
+    complaint_trends: List[Dict[str, Any]] = Field(default_factory=list)
+
+    model_config = ConfigDict(from_attributes=True)
