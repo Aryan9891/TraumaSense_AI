@@ -94,6 +94,17 @@ def check_2_nextjs_build():
     print("\n--- Check 2 - Next.js 15 TypeScript & Production Build Verification ---")
     print(f"  Executing 'npm run build' in {frontend_dir}...")
 
+    # Ensure frontend dependencies exist before build
+    if not (frontend_dir / "node_modules").exists():
+        print(f"  node_modules not found in {frontend_dir}. Running 'npm install --legacy-peer-deps'...")
+        subprocess.run("npm install --legacy-peer-deps", cwd=str(frontend_dir), shell=True, check=True)
+
+    build_env = os.environ.copy()
+    build_env.setdefault("NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY", "pk_test_cmVsYXRpdmUtbGlvbmVzcy00ODYwLmNsZXJrLmFjY291bnRzLmRldiQ")
+    build_env.setdefault("CLERK_SECRET_KEY", "sk_test_azZ2jOt33fanbHGI0atdo2sdKBLYiY1UIECBhyPNAx")
+    build_env.setdefault("NEXT_PUBLIC_API_URL", "http://localhost:8000/api")
+    build_env.setdefault("NEXT_TELEMETRY_DISABLED", "1")
+
     cmd = "npm run build"
     result = subprocess.run(
         cmd,
@@ -101,6 +112,7 @@ def check_2_nextjs_build():
         shell=True,
         capture_output=True,
         text=True,
+        env=build_env,
     )
 
     if result.returncode != 0:

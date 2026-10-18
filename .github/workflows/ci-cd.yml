@@ -26,6 +26,13 @@ jobs:
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
 
+      - name: Set up Node.js 20 (for integrated frontend test verification)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
       - name: Install System Audio & DSP Dependencies
         run: |
           sudo apt-get update
@@ -36,11 +43,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install Frontend Dependencies
+        working-directory: frontend
+        run: npm install --legacy-peer-deps
+
       - name: Initialize Database Tables & Multi-Tier Seed Data
         env:
           USE_LOCAL_SQLITE: "True"
           SQLITE_URL: "sqlite:///./traumasense_local.db"
           PYTHONPATH: "."
+          CLERK_APP_ID: "app_3IVhah3CBQ6QZuu8GFl3EoQFPK6"
+          CLERK_SECRET_KEY: "sk_test_azZ2jOt33fanbHGI0atdo2sdKBLYiY1UIECBhyPNAx"
+          CLERK_PUBLISHABLE_KEY: "pk_test_cmVsYXRpdmUtbGlvbmVzcy00ODYwLmNsZXJrLmFjY291bnRzLmRldiQ"
+          CLERK_JWKS_URL: "https://relative-lioness-4860.clerk.accounts.dev/.well-known/jwks.json"
         run: |
           python -m app.init_db
           python -m app.seed
@@ -50,6 +65,12 @@ jobs:
           USE_LOCAL_SQLITE: "True"
           SQLITE_URL: "sqlite:///./traumasense_local.db"
           PYTHONPATH: "."
+          CLERK_APP_ID: "app_3IVhah3CBQ6QZuu8GFl3EoQFPK6"
+          CLERK_SECRET_KEY: "sk_test_azZ2jOt33fanbHGI0atdo2sdKBLYiY1UIECBhyPNAx"
+          CLERK_PUBLISHABLE_KEY: "pk_test_cmVsYXRpdmUtbGlvbmVzcy00ODYwLmNsZXJrLmFjY291bnRzLmRldiQ"
+          CLERK_JWKS_URL: "https://relative-lioness-4860.clerk.accounts.dev/.well-known/jwks.json"
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pk_test_cmVsYXRpdmUtbGlvbmVzcy00ODYwLmNsZXJrLmFjY291bnRzLmRldiQ"
+          NEXT_PUBLIC_API_URL: "http://localhost:8000/api"
         run: |
           python -m pytest tests -v
 
@@ -78,6 +99,7 @@ jobs:
       - name: Build Next.js Production Bundle
         env:
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pk_test_cmVsYXRpdmUtbGlvbmVzcy00ODYwLmNsZXJrLmFjY291bnRzLmRldiQ"
+          CLERK_SECRET_KEY: "sk_test_azZ2jOt33fanbHGI0atdo2sdKBLYiY1UIECBhyPNAx"
           NEXT_PUBLIC_SUPABASE_URL: "https://dummy-supabase-project.supabase.co"
           NEXT_PUBLIC_SUPABASE_ANON_KEY: "dummy-supabase-anon-key-placeholder"
           NEXT_PUBLIC_API_URL: "http://localhost:8000/api"

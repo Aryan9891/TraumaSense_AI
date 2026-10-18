@@ -56,15 +56,15 @@ class Settings(BaseSettings):
 
     # Clerk Authentication Configuration
     CLERK_APP_ID: str = Field(
-        default="",
+        default="app_3IVhah3CBQ6QZuu8GFl3EoQFPK6",
         description="Clerk Application ID.",
     )
     CLERK_SECRET_KEY: str = Field(
-        default="",
+        default="sk_test_azZ2jOt33fanbHGI0atdo2sdKBLYiY1UIECBhyPNAx",
         description="Clerk Secret API Key.",
     )
     CLERK_PUBLISHABLE_KEY: str = Field(
-        default="",
+        default="pk_test_cmVsYXRpdmUtbGlvbmVzcy00ODYwLmNsZXJrLmFjY291bnRzLmRldiQ",
         description="Clerk Publishable Key.",
     )
     CLERK_JWKS_URL: str = Field(
