@@ -18,6 +18,12 @@ frontend/.env.*.local
 *.sqlite
 *.sqlite3
 traumasense_local.db
+backend/traumasense_local.db
+backend/uploads/audio/*.wav
+backend/uploads/audio/*.mp3
+backend/uploads/audio/*.m4a
+backend/uploads/audio/*.ogg
+backend/uploads/audio/*.flac
 
 # Python
 __pycache__/
