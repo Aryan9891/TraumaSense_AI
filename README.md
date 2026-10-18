@@ -7,6 +7,13 @@
 
 <div align="center">
 
+| 📖 **[Overview (README)](README.md)** | 🧪 **[Testing Suite (22/22 Tests)](TESTING.md)** | 🚀 **[Installation Runbook](INSTALLATION.md)** | 🤝 **[Contributing](CONTRIBUTING.md)** | ⚖️ **[MIT License](LICENSE)** |
+| :---: | :---: | :---: | :---: | :---: |
+
+</div>
+
+<div align="center">
+
 [![CI/CD Pipeline](https://github.com/Aryan9891/TraumaSense_AI/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Aryan9891/TraumaSense_AI/actions)
 [![Pytest 22/22 Tests](https://img.shields.io/badge/Tests-22%2F22%20Passing%20(100%25)-brightgreen.svg)](TESTING.md)
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11%20%7C%203.12-3776AB?logo=python&logoColor=white)](#)

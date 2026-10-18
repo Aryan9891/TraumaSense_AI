@@ -4,6 +4,15 @@ Comprehensive test specification, automated verification reports, and regression
 
 ---
 
+<div align="center">
+
+| 📖 **[Overview (README)](README.md)** | 🧪 **[Testing Suite (Current)](TESTING.md)** | 🚀 **[Installation Runbook](INSTALLATION.md)** | 🤝 **[Contributing](CONTRIBUTING.md)** | ⚖️ **[MIT License](LICENSE)** |
+| :---: | :---: | :---: | :---: | :---: |
+
+</div>
+
+---
+
 ## 🎯 Testing Architecture & Coverage Overview
 
 TraumaSense AI employs an automated, 5-tier testing pyramid spanning unit tests, explainable ML feature checks, REST API contract parity, frontend build compilation, and full end-to-end multi-service orchestration.
