@@ -14,16 +14,18 @@
 
 <div align="center">
 
-[![CI/CD Pipeline](https://github.com/Aryan9891/TraumaSense_AI/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Aryan9891/TraumaSense_AI/actions)
-[![Pytest 22/22 Tests](https://img.shields.io/badge/Tests-22%2F22%20Passing%20(100%25)-brightgreen.svg)](TESTING.md)
-[![Python 3.11+](https://img.shields.io/badge/Python-3.11%20%7C%203.12-3776AB?logo=python&logoColor=white)](#)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688?logo=fastapi&logoColor=white)](#)
-[![Next.js 15+](https://img.shields.io/badge/Next.js-16%20App%20Router-000000?logo=nextdotjs&logoColor=white)](#)
-[![React 19](https://img.shields.io/badge/React-19.3+-61DAFB?logo=react&logoColor=black)](#)
-[![Chart.js](https://img.shields.io/badge/Chart.js-4.5+-FF6384?logo=chartdotjs&logoColor=white)](#)
-[![Clerk Auth](https://img.shields.io/badge/Auth-Clerk%20JWKS%20RS256-6C47FF?logo=clerk&logoColor=white)](#)
-[![Dual Database](https://img.shields.io/badge/Database-SQLite%20(WAL)%20%7C%20Supabase-3ECF8E?logo=supabase&logoColor=white)](#)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/Next.js_15-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](#)
+[![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](#)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](#)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](#)
+[![Python](https://img.shields.io/badge/Python_3.11+-3776AB?style=for-the-badge&logo=python&logoColor=white)](#)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](#)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](#)
+[![SQLite](https://img.shields.io/badge/SQLite_WAL-003B57?style=for-the-badge&logo=sqlite&logoColor=white)](#)
+[![Clerk](https://img.shields.io/badge/Clerk_Auth-6C47FF?style=for-the-badge&logo=clerk&logoColor=white)](#)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](#)
+[![Tests Passing](https://img.shields.io/badge/Pytest-22%2F22_PASSING-brightgreen?style=for-the-badge&logo=pytest&logoColor=white)](TESTING.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 **Emergency Helplines Integrated**:
 `🚨 112 National Emergency` • `👩 181 Women Helpline` • `🧒 1098 Childline` • `🧠 14416 Tele-MANAS`
@@ -322,6 +324,29 @@ python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 cd frontend
 npm install --legacy-peer-deps
 npm run dev
+```
+
+### Environment Variables Setup
+Copy the template to your environment configuration:
+```bash
+cp .env.example .env
+```
+
+Key environment configuration parameters:
+```env
+# Database (Primary SQLite WAL for local, Supabase Postgres for cloud)
+USE_LOCAL_SQLITE=True
+SQLITE_URL=sqlite:///./traumasense_local.db
+DATABASE_URL=postgresql://postgres.ref:password@aws-0-ap-south-1.pooler.supabase.com:6543/postgres?sslmode=require
+
+# Clerk Authentication (RS256 JWT)
+CLERK_SECRET_KEY=sk_test_...
+CLERK_PUBLISHABLE_KEY=pk_test_...
+CLERK_JWKS_URL=https://your-domain.clerk.accounts.dev/.well-known/jwks.json
+
+# Audio / NLP Settings
+WHISPER_MODEL_SIZE=base
+DEVICE=cpu
 ```
 
 For complete cloud deployment (Vercel, GCP Cloud Run, Supabase), read the full [INSTALLATION.md](INSTALLATION.md) runbook.
