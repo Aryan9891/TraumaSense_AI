@@ -1,0 +1,59 @@
+services:
+  traumasense-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: traumasense-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - PORT=8000
+      - HOST=0.0.0.0
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./backend:/app
+      - backend-sqlite-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health', timeout=5)"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - traumasense-network
+
+  traumasense-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: traumasense-frontend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+      - HOST=0.0.0.0
+      - NEXT_PUBLIC_BACKEND_URL=http://localhost:8000
+      - NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=${CLERK_PUBLISHABLE_KEY}
+    depends_on:
+      traumasense-backend:
+        condition: service_healthy
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    restart: unless-stopped
+    networks:
+      - traumasense-network
+
+volumes:
+  backend-sqlite-data:
+    driver: local
+
+networks:
+  traumasense-network:
+    driver: bridge
