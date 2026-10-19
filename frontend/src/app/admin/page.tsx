@@ -17,18 +17,14 @@ import {
   ComplaintDetail,
 } from "@/lib/api";
 import {
-  LayoutDashboard,
   ShieldAlert,
-  AlertTriangle,
   Siren,
   CheckCircle2,
   Clock,
   MapPin,
   RefreshCw,
-  Eye,
   X,
   FileCheck2,
-  Radio,
   Send,
   Loader2,
   PhoneCall,
@@ -110,27 +106,27 @@ export default function OfficerDashboardPage() {
   ).filter(Boolean);
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-teal-700 selection:text-white">
       <Navbar />
 
-      <main className="flex-1 mx-auto max-w-7xl w-full px-4 sm:px-6 py-8 space-y-8">
+      <main id="main-content" className="flex-1 mx-auto max-w-7xl w-full px-4 sm:px-6 py-8 space-y-8">
         {/* Dashboard Title & Actions Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-4">
+        <header className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="flex h-2.5 w-2.5 relative">
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="relative flex h-2.5 w-2.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
               </span>
-              <span className="text-xs font-bold tracking-widest uppercase text-red-400 font-mono">
-                Real-Time Crisis Command
+              <span className="text-xs font-semibold tracking-wider uppercase text-teal-400">
+                Crisis Response Console
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              Officer Triage &amp; Emergency Dispatch Dashboard
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              Responder Desk — Emergency Triage &amp; Case Management
             </h1>
             <p className="mt-1 text-sm text-slate-400">
-              National operations console for crisis intake monitoring, automated alert escalation, and forensic SVI auditing.
+              Operations console for monitoring incoming distress reports, active emergency alerts, and forensic SVI scoring.
             </p>
           </div>
 
@@ -138,60 +134,61 @@ export default function OfficerDashboardPage() {
             type="button"
             onClick={loadData}
             disabled={loading}
-            className="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-200 hover:bg-slate-800 transition cursor-pointer"
+            className="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs font-semibold text-slate-200 hover:bg-slate-800 transition cursor-pointer"
+            aria-label="Refresh operational data"
           >
-            <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin text-red-400" : ""}`} />
-            <span>Sync Live Telemetry</span>
+            <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin text-teal-400" : ""}`} />
+            <span>Refresh Operations Data</span>
           </button>
-        </div>
+        </header>
 
-        {/* Top 4 KPI Metric Cards */}
+        {/* Top 4 Metric Cards */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 shadow-xl backdrop-blur-sm">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 shadow-sm backdrop-blur-sm">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
-              Total Incidents
+              Total Reports Filed
             </span>
             <div className="mt-2 flex items-baseline gap-2">
-              <span className="text-3xl font-black text-white font-mono">
+              <span className="text-3xl font-bold text-white font-mono">
                 {analytics?.total_complaints || 0}
               </span>
-              <span className="text-xs text-slate-500">Recorded</span>
+              <span className="text-xs text-slate-500">Intakes</span>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 shadow-xl backdrop-blur-sm">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 shadow-sm backdrop-blur-sm">
             <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block">
-              Active Cases
+              Active Triage Cases
             </span>
             <div className="mt-2 flex items-baseline gap-2">
-              <span className="text-3xl font-black text-indigo-400 font-mono">
+              <span className="text-3xl font-bold text-teal-300 font-mono">
                 {analytics?.active_cases || 0}
               </span>
-              <span className="text-xs text-slate-500">In Pipeline</span>
+              <span className="text-xs text-slate-500">In Review</span>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 shadow-xl backdrop-blur-sm">
-            <span className="text-xs font-semibold text-orange-400 uppercase tracking-wider block">
-              High Risk Alerts
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-5 shadow-sm backdrop-blur-sm">
+            <span className="text-xs font-semibold text-amber-400 uppercase tracking-wider block">
+              High Risk Incidents
             </span>
             <div className="mt-2 flex items-baseline gap-2">
-              <span className="text-3xl font-black text-orange-400 font-mono">
+              <span className="text-3xl font-bold text-amber-400 font-mono">
                 {analytics?.high_risk_alerts || 0}
               </span>
               <span className="text-xs text-slate-500">Tier 3</span>
             </div>
           </div>
 
-          <div className="rounded-2xl border border-red-900/80 bg-red-950/30 p-5 shadow-xl backdrop-blur-sm">
+          <div className="rounded-2xl border border-red-900/80 bg-red-950/30 p-5 shadow-sm backdrop-blur-sm">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-red-400 uppercase tracking-wider block">
-                Critical Alerts (Open)
+                Critical Crisis Alerts
               </span>
               <Siren className="h-4 w-4 text-red-500 animate-pulse" />
             </div>
             <div className="mt-2 flex items-baseline gap-2">
-              <span className="text-3xl font-black text-red-400 font-mono">
+              <span className="text-3xl font-bold text-red-400 font-mono">
                 {analytics?.open_alerts_count || 0}
               </span>
               <span className="text-xs text-red-300/80">Pending Action</span>
@@ -200,17 +197,16 @@ export default function OfficerDashboardPage() {
         </div>
 
         {/* Real-Time Critical Alert Dispatch Feed */}
-        <div className="rounded-2xl border border-red-900/60 bg-slate-900/70 p-6 shadow-2xl backdrop-blur-sm space-y-4">
+        <section className="rounded-2xl border border-red-900/60 bg-slate-900/70 p-6 shadow-sm backdrop-blur-sm space-y-4" aria-labelledby="active-alerts-heading">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="h-3 w-3 rounded-full bg-red-500 animate-ping" />
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <ShieldAlert className="h-4 w-4 text-red-400" />
-                Live Emergency Dispatch Feed
-              </h3>
+              <ShieldAlert className="h-5 w-5 text-red-400" />
+              <h2 id="active-alerts-heading" className="font-serif text-sm font-bold text-white uppercase tracking-wider">
+                Active Crisis Dispatch Queue
+              </h2>
             </div>
-            <span className="text-xs font-mono font-bold text-slate-400">
-              {alerts.length} Active Feeds
+            <span className="text-xs font-mono font-semibold text-slate-400">
+              {alerts.length} Pending Feeds
             </span>
           </div>
 
@@ -219,7 +215,7 @@ export default function OfficerDashboardPage() {
               No active emergency dispatch alerts pending response.
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 gap-3 max-h-96 overflow-y-auto pr-1 custom-scrollbar">
+            <div className="grid md:grid-cols-2 gap-3 max-h-96 overflow-y-auto pr-1">
               {alerts.map((alert) => {
                 const isDispatched = alert.status === "ACKNOWLEDGED";
                 const isResolved = alert.status === "RESOLVED";
@@ -236,7 +232,7 @@ export default function OfficerDashboardPage() {
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-2">
                         <span
-                          className={`rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider ${
+                          className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
                             alert.alert_level === "CRITICAL"
                               ? "bg-red-600 text-white"
                               : "bg-orange-600 text-white"
@@ -246,9 +242,9 @@ export default function OfficerDashboardPage() {
                         </span>
 
                         <span
-                          className={`rounded border px-2 py-0.5 text-[10px] font-mono font-bold ${
+                          className={`rounded border px-2 py-0.5 text-[10px] font-mono font-semibold ${
                             isResolved
-                              ? "bg-emerald-950 text-emerald-400 border-emerald-800"
+                              ? "bg-teal-950 text-teal-300 border-teal-800"
                               : isDispatched
                               ? "bg-amber-950 text-amber-300 border-amber-800"
                               : "bg-red-950 text-red-300 border-red-700 animate-pulse"
@@ -258,24 +254,24 @@ export default function OfficerDashboardPage() {
                         </span>
                       </div>
 
-                      <h4 className="text-sm font-bold text-white truncate">
+                      <h3 className="font-serif text-sm font-bold text-white truncate">
                         {alert.complaint?.title || "Incident Distress Trigger"}
-                      </h4>
+                      </h3>
 
                       <div className="mt-1 flex flex-wrap items-center gap-3 text-xs text-slate-400">
                         <span className="flex items-center gap-1">
                           <MapPin className="h-3 w-3 text-slate-500" />
-                          {alert.complaint?.state_location || "Unknown"}
+                          <span>{alert.complaint?.state_location || "Unknown"}</span>
                         </span>
                         <span>&bull;</span>
-                        <span className="flex items-center gap-1">
+                        <span className="flex items-center gap-1 font-mono">
                           <Clock className="h-3 w-3 text-slate-500" />
-                          {new Date(alert.created_at).toLocaleTimeString()}
+                          <span>{new Date(alert.created_at).toLocaleTimeString()}</span>
                         </span>
                       </div>
 
                       {alert.dispatched_at && (
-                        <p className="mt-2 text-[11px] font-mono text-emerald-400 bg-slate-950/60 p-1.5 rounded border border-slate-800">
+                        <p className="mt-2 text-[11px] font-mono text-teal-300 bg-slate-950/60 p-1.5 rounded border border-slate-800">
                           Dispatched: {new Date(alert.dispatched_at).toLocaleString()}
                         </p>
                       )}
@@ -288,7 +284,8 @@ export default function OfficerDashboardPage() {
                           type="button"
                           onClick={() => handleAcknowledge(alert.id, "ACKNOWLEDGED")}
                           disabled={actionInProgress === alert.id}
-                          className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-red-600 hover:bg-red-500 active:scale-95 px-3 py-2 text-xs font-bold text-white shadow-md transition cursor-pointer disabled:opacity-50"
+                          className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-red-600 hover:bg-red-500 active:scale-95 px-3 py-2 text-xs font-semibold text-white shadow transition cursor-pointer disabled:opacity-50"
+                          aria-label={`Acknowledge and dispatch alert ${alert.id}`}
                         >
                           {actionInProgress === alert.id ? (
                             <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -302,7 +299,8 @@ export default function OfficerDashboardPage() {
                           type="button"
                           onClick={() => handleAcknowledge(alert.id, "RESOLVED")}
                           disabled={actionInProgress === alert.id}
-                          className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 active:scale-95 px-3 py-2 text-xs font-bold text-white shadow-md transition cursor-pointer disabled:opacity-50"
+                          className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-teal-700 hover:bg-teal-600 active:scale-95 px-3 py-2 text-xs font-semibold text-white shadow transition cursor-pointer disabled:opacity-50"
+                          aria-label={`Mark alert ${alert.id} resolved`}
                         >
                           {actionInProgress === alert.id ? (
                             <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -312,7 +310,7 @@ export default function OfficerDashboardPage() {
                           <span>Mark Case Resolved</span>
                         </button>
                       ) : (
-                        <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1">
+                        <span className="text-xs text-teal-300 font-semibold flex items-center gap-1">
                           <CheckCircle2 className="h-4 w-4" />
                           Dispatch Resolved
                         </span>
@@ -322,6 +320,7 @@ export default function OfficerDashboardPage() {
                         href="tel:112"
                         className="rounded-lg border border-slate-700 p-2 text-slate-300 hover:text-white hover:bg-slate-800 transition"
                         title="Direct Emergency Hotline"
+                        aria-label="Call 112 emergency service"
                       >
                         <PhoneCall className="h-3.5 w-3.5 text-red-400" />
                       </a>
@@ -331,10 +330,10 @@ export default function OfficerDashboardPage() {
               })}
             </div>
           )}
-        </div>
+        </section>
 
-        {/* 3-Column Analytics Grid */}
-        <div className="grid lg:grid-cols-3 gap-6">
+        {/* 3-Column Visualizations Grid */}
+        <section className="grid lg:grid-cols-3 gap-6" aria-label="Clinical Metrics Overview">
           <RiskDistributionBar
             distribution={analytics?.risk_distribution}
             title="SVI Severity Distribution"
@@ -349,16 +348,16 @@ export default function OfficerDashboardPage() {
             stateWiseStats={analytics?.state_wise_stats}
             title="Geographic Case Concentration"
           />
-        </div>
+        </section>
 
-        {/* Case Audit Table & Forensic Inspector */}
-        <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl space-y-4">
+        {/* Case Audit Table & Review Queue */}
+        <section className="rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-sm space-y-4" aria-labelledby="case-queue-heading">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
-              <h3 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
-                <FileCheck2 className="h-4 w-4 text-indigo-400" />
-                Case Audit &amp; Forensic Review Queue
-              </h3>
+              <h2 id="case-queue-heading" className="font-serif text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                <FileCheck2 className="h-4 w-4 text-teal-400" />
+                Case Audit &amp; Review Queue
+              </h2>
               <p className="text-xs text-slate-400 mt-0.5">
                 Detailed record logs containing transcript forensics, SHAP attribution, and clinical scoring.
               </p>
@@ -369,6 +368,7 @@ export default function OfficerDashboardPage() {
               <select
                 value={auditRiskFilter}
                 onChange={(e) => setAuditRiskFilter(e.target.value)}
+                aria-label="Filter case queue by risk tier"
                 className="rounded-xl border border-slate-800 bg-slate-950 px-3 py-1.5 text-xs text-slate-300 focus:outline-none"
               >
                 <option value="ALL">All Risk Tiers</option>
@@ -381,6 +381,7 @@ export default function OfficerDashboardPage() {
               <select
                 value={auditStateFilter}
                 onChange={(e) => setAuditStateFilter(e.target.value)}
+                aria-label="Filter case queue by state"
                 className="rounded-xl border border-slate-800 bg-slate-950 px-3 py-1.5 text-xs text-slate-300 focus:outline-none"
               >
                 <option value="ALL">All States</option>
@@ -395,7 +396,7 @@ export default function OfficerDashboardPage() {
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800">
+              <thead className="bg-slate-950 text-[11px] font-semibold uppercase tracking-wider text-slate-400 border-b border-slate-800">
                 <tr>
                   <th className="p-3">Title &amp; Identifier</th>
                   <th className="p-3">State</th>
@@ -423,14 +424,14 @@ export default function OfficerDashboardPage() {
                     </td>
                     <td className="p-3">
                       <span
-                        className={`rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-wider ${
+                        className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
                           complaint.risk_score?.risk_category === "CRITICAL"
-                            ? "bg-red-600 text-white"
+                            ? "bg-red-700 text-white"
                             : complaint.risk_score?.risk_category === "HIGH"
-                            ? "bg-orange-600 text-white"
+                            ? "bg-orange-700 text-white"
                             : complaint.risk_score?.risk_category === "MODERATE"
-                            ? "bg-amber-600 text-white"
-                            : "bg-emerald-600 text-white"
+                            ? "bg-amber-700 text-white"
+                            : "bg-teal-700 text-white"
                         }`}
                       >
                         {complaint.risk_score?.risk_category || "LOW"}
@@ -438,7 +439,7 @@ export default function OfficerDashboardPage() {
                     </td>
                     <td className="p-3">
                       {complaint.trauma_analysis?.violence_indicators ? (
-                        <span className="text-[11px] font-bold text-red-400">
+                        <span className="text-[11px] font-semibold text-red-400">
                           WEAPON / THREAT
                         </span>
                       ) : (
@@ -446,7 +447,7 @@ export default function OfficerDashboardPage() {
                       )}
                     </td>
                     <td className="p-3">
-                      <span className="text-[11px] font-semibold text-slate-300">
+                      <span className="text-[11px] font-medium text-slate-300">
                         {complaint.status}
                       </span>
                     </td>
@@ -455,6 +456,7 @@ export default function OfficerDashboardPage() {
                         type="button"
                         onClick={() => setSelectedCase(complaint)}
                         className="rounded-lg bg-slate-800 hover:bg-slate-700 px-2.5 py-1 text-xs font-semibold text-slate-200 transition cursor-pointer"
+                        aria-label={`Audit case ${complaint.title}`}
                       >
                         Audit
                       </button>
@@ -464,27 +466,28 @@ export default function OfficerDashboardPage() {
               </tbody>
             </table>
           </div>
-        </div>
+        </section>
 
-        {/* Forensic Modal View */}
+        {/* Clinical Audit Modal View */}
         {selectedCase && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md" role="dialog" aria-modal="true" aria-labelledby="audit-modal-title">
             <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-2xl space-y-6">
               <button
                 type="button"
                 onClick={() => setSelectedCase(null)}
                 className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+                aria-label="Close audit modal"
               >
                 <X className="h-5 w-5" />
               </button>
 
               <div>
-                <span className="text-xs font-mono text-red-400 uppercase">
-                  Forensic Audit &bull; {selectedCase.id}
+                <span className="text-xs font-mono text-teal-400 uppercase">
+                  Clinical Audit &bull; {selectedCase.id}
                 </span>
-                <h3 className="text-xl font-black text-white mt-1">
+                <h2 id="audit-modal-title" className="font-serif text-xl font-bold text-white mt-1">
                   {selectedCase.title}
-                </h3>
+                </h2>
               </div>
 
               {selectedCase.risk_score && (
@@ -496,24 +499,24 @@ export default function OfficerDashboardPage() {
                   />
 
                   <div className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-2 text-xs">
-                    <h5 className="font-bold text-slate-300 uppercase tracking-wider mb-2">
+                    <h3 className="font-serif text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
                       Clinical Trauma Profile
-                    </h5>
+                    </h3>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Violence Threat:</span>
-                      <span className="font-bold text-white">
+                      <span className="font-semibold text-white">
                         {selectedCase.trauma_analysis?.violence_indicators ? "CONFIRMED" : "NEGATIVE"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Suicidal Risk:</span>
-                      <span className="font-bold text-amber-400 font-mono">
+                      <span className="font-semibold text-amber-400 font-mono">
                         {((selectedCase.trauma_analysis?.suicidal_ideation || 0) * 100).toFixed(0)}%
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Acoustic Distress:</span>
-                      <span className="font-bold text-red-400 font-mono">
+                      <span className="font-semibold text-teal-300 font-mono">
                         {selectedCase.acoustic_features?.pitch_f0
                           ? `${selectedCase.acoustic_features.pitch_f0} Hz`
                           : "N/A (Text)"}

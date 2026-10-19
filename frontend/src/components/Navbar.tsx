@@ -7,19 +7,19 @@ import { useAuth, SignInButton, UserButton } from "@clerk/nextjs";
 import {
   ShieldAlert,
   PhoneCall,
-  Activity,
   FileText,
   LayoutDashboard,
   Menu,
   X,
-  Radio,
+  HeartHandshake,
+  Activity,
 } from "lucide-react";
 
 const HELPLINES = [
-  { name: "Emergency", number: "112", color: "text-red-400 bg-red-950/60 border-red-800" },
-  { name: "Women", number: "181", color: "text-pink-400 bg-pink-950/60 border-pink-800" },
-  { name: "Childline", number: "1098", color: "text-amber-400 bg-amber-950/60 border-amber-800" },
-  { name: "Tele-MANAS", number: "14416", color: "text-cyan-400 bg-cyan-950/60 border-cyan-800" },
+  { name: "Emergency", number: "112", desc: "National Emergency Response System" },
+  { name: "Women in Distress", number: "181", desc: "Women Helpline" },
+  { name: "Childline", number: "1098", desc: "Emergency Child Protection" },
+  { name: "Tele-MANAS", number: "14416", desc: "National Mental Health Support" },
 ];
 
 export default function Navbar() {
@@ -29,67 +29,68 @@ export default function Navbar() {
 
   const navLinks = [
     { label: "Overview", href: "/", icon: Activity },
-    { label: "Report Distress", href: "/portal", icon: ShieldAlert },
-    { label: "Case Tracker", href: "/portal/history", icon: FileText },
-    { label: "Officer Triage", href: "/admin", icon: LayoutDashboard },
+    { label: "File a Report", href: "/portal", icon: ShieldAlert },
+    { label: "My Case Status", href: "/portal/history", icon: FileText },
+    { label: "Responder Desk", href: "/admin", icon: LayoutDashboard },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/85 backdrop-blur-md transition-all">
-      {/* Top Emergency Helplines Ticker */}
-      <div className="border-b border-slate-800/50 bg-slate-900/60 px-4 py-1.5 text-xs">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-slate-400">
-            <span className="flex h-2 w-2 relative">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md transition-all">
+      {/* 24x7 Toll-Free Crisis Helplines Civic Header Utility Bar */}
+      <div className="border-b border-slate-800/70 bg-slate-900/80 px-4 py-2 text-xs">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-2.5">
+          <div className="flex items-center gap-2 text-slate-300">
+            <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
             </span>
-            <span className="font-semibold uppercase tracking-wider text-slate-300">
-              National Emergency Helplines (India):
+            <span className="font-semibold text-slate-200 tracking-wide">
+              24×7 Toll-Free Crisis Helplines:
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3" role="navigation" aria-label="Emergency Helplines">
             {HELPLINES.map((item) => (
               <a
                 key={item.number}
                 href={`tel:${item.number}`}
-                className={`flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-medium transition hover:brightness-125 ${item.color}`}
-                title={`Call ${item.name} (${item.number})`}
+                className="inline-flex items-center gap-1.5 rounded-full border border-slate-700/80 bg-slate-800/70 px-2.5 py-1 text-[11px] font-medium text-slate-200 hover:border-teal-500 hover:text-teal-300 transition-colors"
+                title={`${item.desc} — Call ${item.number}`}
+                aria-label={`Call ${item.name} at ${item.number}`}
               >
-                <PhoneCall className="h-3 w-3" />
-                <span>{item.name}:</span>
-                <span className="font-bold">{item.number}</span>
+                <PhoneCall className="h-3 w-3 text-teal-400" />
+                <span className="text-slate-400">{item.name}:</span>
+                <span className="font-mono font-bold text-white">{item.number}</span>
               </a>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Main Navbar */}
+      {/* Main Civic Navigation Bar */}
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-        {/* Brand */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-red-600 via-rose-600 to-indigo-700 shadow-lg shadow-red-900/30 group-hover:scale-105 transition-transform">
-            <Radio className="h-5 w-5 text-white animate-pulse" />
+        {/* Dignified Clinical Brand Identity */}
+        <Link href="/" className="flex items-center gap-3 group" aria-label="TraumaSense India Home">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-900/60 border border-teal-700/60 text-teal-300 group-hover:bg-teal-800/70 transition-colors">
+            <HeartHandshake className="h-5 w-5 text-teal-300" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-lg font-black tracking-tight text-white group-hover:text-red-400 transition-colors">
+              <span className="font-serif text-xl font-bold tracking-tight text-white group-hover:text-teal-300 transition-colors">
                 TraumaSense
               </span>
-              <span className="rounded bg-red-500/20 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-widest text-red-400 border border-red-500/30">
-                AI
+              <span className="rounded-md bg-teal-950 px-2 py-0.5 text-[10px] font-semibold tracking-wider text-teal-300 border border-teal-800/80">
+                India
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 font-medium">
-              Multimodal Crisis Assessment &amp; SVI Triage
+            <p className="text-[11px] text-slate-400">
+              Multilingual Clinical Triage &amp; Crisis Response
             </p>
           </div>
         </Link>
 
         {/* Desktop Navigation Links */}
-        <nav className="hidden md:flex items-center gap-1 bg-slate-900/60 p-1.5 rounded-2xl border border-slate-800/80">
+        <nav className="hidden md:flex items-center gap-1 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800/80" aria-label="Primary Navigation">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive =
@@ -100,20 +101,21 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-semibold transition-all ${
+                className={`flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-medium transition-all ${
                   isActive
-                    ? "bg-red-600/20 text-red-300 border border-red-500/40 shadow-sm shadow-red-950"
-                    : "text-slate-300 hover:text-white hover:bg-slate-800/50"
+                    ? "bg-teal-950/90 text-teal-300 border border-teal-700/60 shadow-sm"
+                    : "text-slate-300 hover:text-white hover:bg-slate-800/60"
                 }`}
+                aria-current={isActive ? "page" : undefined}
               >
-                <Icon className={`h-4 w-4 ${isActive ? "text-red-400" : "text-slate-400"}`} />
-                {link.label}
+                <Icon className={`h-4 w-4 ${isActive ? "text-teal-400" : "text-slate-400"}`} />
+                <span>{link.label}</span>
               </Link>
             );
           })}
         </nav>
 
-        {/* Auth Controls */}
+        {/* Authentication Controls */}
         <div className="hidden md:flex items-center gap-3">
           {isLoaded && (
             <>
@@ -123,8 +125,8 @@ export default function Navbar() {
                 </div>
               ) : (
                 <SignInButton mode="modal">
-                  <button className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-red-600 to-rose-600 px-4 py-2 text-xs font-bold text-white shadow-md shadow-red-900/30 hover:brightness-110 active:scale-95 transition-all cursor-pointer">
-                    Sign In
+                  <button className="flex items-center gap-2 rounded-xl bg-teal-700 hover:bg-teal-600 active:scale-95 px-4 py-2 text-xs font-semibold text-white shadow-sm transition-all cursor-pointer">
+                    Duty Officer Sign In
                   </button>
                 </SignInButton>
               )}
@@ -137,6 +139,7 @@ export default function Navbar() {
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800"
           aria-label="Toggle navigation menu"
+          aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
@@ -145,7 +148,7 @@ export default function Navbar() {
       {/* Mobile Dropdown Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden border-t border-slate-800 bg-slate-950/95 px-4 py-4 space-y-3">
-          <nav className="flex flex-col space-y-1">
+          <nav className="flex flex-col space-y-1" aria-label="Mobile Navigation">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive =
@@ -159,12 +162,13 @@ export default function Navbar() {
                   onClick={() => setMobileMenuOpen(false)}
                   className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium ${
                     isActive
-                      ? "bg-red-600/20 text-red-300 border border-red-500/30"
+                      ? "bg-teal-950/80 text-teal-300 border border-teal-800"
                       : "text-slate-300 hover:bg-slate-800/60"
                   }`}
+                  aria-current={isActive ? "page" : undefined}
                 >
-                  <Icon className="h-4 w-4 text-red-400" />
-                  {link.label}
+                  <Icon className="h-4 w-4 text-teal-400" />
+                  <span>{link.label}</span>
                 </Link>
               );
             })}
@@ -173,8 +177,8 @@ export default function Navbar() {
           <div className="pt-2 border-t border-slate-800">
             {isLoaded && !isSignedIn && (
               <SignInButton mode="modal">
-                <button className="w-full rounded-lg bg-red-600 py-2.5 text-center text-xs font-bold text-white shadow-md hover:bg-red-500">
-                  Sign In / Register
+                <button className="w-full rounded-lg bg-teal-700 py-2.5 text-center text-xs font-semibold text-white shadow hover:bg-teal-600">
+                  Duty Officer Sign In
                 </button>
               </SignInButton>
             )}

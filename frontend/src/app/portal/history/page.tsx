@@ -9,7 +9,6 @@ import {
   FileText,
   Search,
   Filter,
-  Calendar,
   MapPin,
   Clock,
   CheckCircle,
@@ -20,7 +19,7 @@ import {
   X,
   RefreshCw,
   Loader2,
-  ShieldAlert,
+  HeartHandshake,
 } from "lucide-react";
 
 export default function CaseHistoryPage() {
@@ -67,11 +66,11 @@ export default function CaseHistoryPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "RESOLVED":
-        return "bg-emerald-950/80 text-emerald-400 border-emerald-800";
+        return "bg-teal-950/80 text-teal-300 border-teal-800";
       case "ESCALATED":
         return "bg-red-950/80 text-red-400 border-red-800 animate-pulse";
       case "IN_REVIEW":
-        return "bg-amber-950/80 text-amber-400 border-amber-800";
+        return "bg-amber-950/80 text-amber-300 border-amber-800";
       default:
         return "bg-slate-800 text-slate-300 border-slate-700";
     }
@@ -80,37 +79,37 @@ export default function CaseHistoryPage() {
   const getRiskBadge = (category?: string) => {
     switch (category) {
       case "CRITICAL":
-        return "bg-red-600 text-white";
+        return "bg-red-700 text-white";
       case "HIGH":
-        return "bg-orange-600 text-white";
+        return "bg-orange-700 text-white";
       case "MODERATE":
-        return "bg-amber-600 text-white";
+        return "bg-amber-700 text-white";
       case "LOW":
-        return "bg-emerald-600 text-white";
+        return "bg-teal-700 text-white";
       default:
         return "bg-slate-700 text-slate-300";
     }
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col selection:bg-teal-700 selection:text-white">
       <Navbar />
 
-      <main className="flex-1 mx-auto max-w-6xl w-full px-4 sm:px-6 py-8">
+      <main id="main-content" className="flex-1 mx-auto max-w-6xl w-full px-4 sm:px-6 py-8">
         {/* Header */}
-        <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <header className="flex flex-wrap items-center justify-between gap-4 mb-8">
           <div>
-            <div className="flex items-center gap-2 mb-1">
-              <FileText className="h-5 w-5 text-indigo-400" />
-              <span className="text-xs font-bold tracking-widest uppercase text-indigo-400">
-                Incident Audit Log
+            <div className="flex items-center gap-2 mb-1.5">
+              <FileText className="h-4 w-4 text-teal-400" />
+              <span className="text-xs font-semibold tracking-wider uppercase text-teal-400">
+                Confidential Case Registry
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-              Case Tracker &amp; Triage History
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white tracking-tight">
+              Track Your Case Status &amp; Safety Recommendations
             </h1>
             <p className="mt-1 text-sm text-slate-400">
-              Inspect past distress filings, forensic SVI assessments, SHAP keywords, and dispatch status.
+              Review filed incident statements, SVI clinical triage scores, and prescribed safety recommendations.
             </p>
           </div>
 
@@ -118,15 +117,16 @@ export default function CaseHistoryPage() {
             type="button"
             onClick={fetchCases}
             disabled={loading}
-            className="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-200 hover:bg-slate-800 transition cursor-pointer"
+            className="flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs font-semibold text-slate-200 hover:bg-slate-800 transition cursor-pointer"
+            aria-label="Refresh case records"
           >
-            <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin text-red-400" : ""}`} />
+            <RefreshCw className={`h-4 w-4 ${loading ? "animate-spin text-teal-400" : ""}`} />
             <span>Refresh Records</span>
           </button>
-        </div>
+        </header>
 
         {/* Filter Controls Bar */}
-        <div className="grid sm:grid-cols-3 gap-3 mb-6 p-4 rounded-2xl bg-slate-900/50 border border-slate-800">
+        <div className="grid sm:grid-cols-3 gap-3 mb-6 p-4 rounded-2xl bg-slate-900/50 border border-slate-800" role="search" aria-label="Filter case history">
           {/* Search Box */}
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
@@ -135,7 +135,8 @@ export default function CaseHistoryPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by title, state, or ID..."
-              className="w-full rounded-xl border border-slate-800 bg-slate-950 pl-9 pr-4 py-2 text-xs text-slate-200 placeholder-slate-500 focus:border-red-500 focus:outline-none"
+              aria-label="Search cases"
+              className="w-full rounded-xl border border-slate-800 bg-slate-950 pl-9 pr-4 py-2 text-xs text-slate-200 placeholder-slate-500 focus:border-teal-500 focus:outline-none"
             />
           </div>
 
@@ -145,7 +146,8 @@ export default function CaseHistoryPage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-xs text-slate-300 focus:border-red-500 focus:outline-none"
+              aria-label="Filter by case status"
+              className="w-full rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-xs text-slate-300 focus:border-teal-500 focus:outline-none"
             >
               <option value="ALL">Status: All Statuses</option>
               <option value="PENDING">Pending</option>
@@ -161,7 +163,8 @@ export default function CaseHistoryPage() {
             <select
               value={riskFilter}
               onChange={(e) => setRiskFilter(e.target.value)}
-              className="w-full rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-xs text-slate-300 focus:border-red-500 focus:outline-none"
+              aria-label="Filter by risk tier"
+              className="w-full rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-xs text-slate-300 focus:border-teal-500 focus:outline-none"
             >
               <option value="ALL">Risk Tier: All Tiers</option>
               <option value="CRITICAL">Critical</option>
@@ -175,28 +178,28 @@ export default function CaseHistoryPage() {
         {/* Complaints Table */}
         {loading ? (
           <div className="flex flex-col items-center justify-center p-16 text-slate-400">
-            <Loader2 className="h-8 w-8 animate-spin text-red-500 mb-2" />
+            <Loader2 className="h-8 w-8 animate-spin text-teal-500 mb-2" />
             <span className="text-xs font-semibold">Retrieving case records from database...</span>
           </div>
         ) : filteredComplaints.length === 0 ? (
           <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-12 text-center text-slate-500">
             <FileText className="h-10 w-10 mx-auto mb-2 text-slate-600" />
-            <h4 className="text-sm font-bold text-slate-400">No cases match the query criteria.</h4>
-            <p className="text-xs mt-1">Try resetting the status or risk tier filters.</p>
+            <h2 className="font-serif text-sm font-bold text-slate-400">No cases match the query criteria.</h2>
+            <p className="text-xs mt-1">Try adjusting the search query or status filters.</p>
           </div>
         ) : (
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden shadow-xl">
+          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs text-slate-300">
-                <thead className="bg-slate-950/80 text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800">
+                <thead className="bg-slate-950/80 text-[11px] font-semibold uppercase tracking-wider text-slate-400 border-b border-slate-800">
                   <tr>
                     <th className="p-4">Case &amp; Title</th>
                     <th className="p-4">Jurisdiction</th>
-                    <th className="p-4">Intake Type</th>
+                    <th className="p-4">Intake Modality</th>
                     <th className="p-4">SVI Score</th>
                     <th className="p-4">Risk Tier</th>
                     <th className="p-4">Status</th>
-                    <th className="p-4 text-right">Inspect</th>
+                    <th className="p-4 text-right">Action</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/60">
@@ -206,11 +209,11 @@ export default function CaseHistoryPage() {
                       className="hover:bg-slate-800/40 transition-colors"
                     >
                       <td className="p-4 max-w-xs">
-                        <div className="font-bold text-slate-100 truncate">
+                        <div className="font-semibold text-slate-100 truncate">
                           {c.title}
                         </div>
                         <div className="text-[11px] text-slate-500 font-mono mt-0.5">
-                          ID: {c.id.slice(0, 12)}...
+                          Ref: {c.id.slice(0, 12)}...
                         </div>
                       </td>
 
@@ -227,14 +230,14 @@ export default function CaseHistoryPage() {
 
                       <td className="p-4">
                         {c.audio_file ? (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-red-400 bg-red-950/50 border border-red-800/60 px-2 py-0.5 rounded-full">
+                          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-teal-300 bg-teal-950/60 border border-teal-800/60 px-2 py-0.5 rounded-full">
                             <Mic className="h-3 w-3" />
-                            Audio DSP
+                            Voice Statement
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-indigo-400 bg-indigo-950/50 border border-indigo-800/60 px-2 py-0.5 rounded-full">
+                          <span className="inline-flex items-center gap-1 text-[11px] font-medium text-slate-300 bg-slate-800/60 border border-slate-700/60 px-2 py-0.5 rounded-full">
                             <FileText className="h-3 w-3" />
-                            Text NLP
+                            Written Text
                           </span>
                         )}
                       </td>
@@ -245,7 +248,7 @@ export default function CaseHistoryPage() {
 
                       <td className="p-4">
                         <span
-                          className={`rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-wider ${getRiskBadge(
+                          className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${getRiskBadge(
                             c.risk_score?.risk_category
                           )}`}
                         >
@@ -255,7 +258,7 @@ export default function CaseHistoryPage() {
 
                       <td className="p-4">
                         <span
-                          className={`rounded-lg border px-2.5 py-1 text-[11px] font-semibold ${getStatusBadge(
+                          className={`rounded-lg border px-2.5 py-1 text-[11px] font-medium ${getStatusBadge(
                             c.status
                           )}`}
                         >
@@ -268,9 +271,10 @@ export default function CaseHistoryPage() {
                           type="button"
                           onClick={() => setSelectedCase(c)}
                           className="inline-flex items-center gap-1 rounded-xl bg-slate-800 hover:bg-slate-700 px-3 py-1.5 text-xs font-semibold text-slate-200 transition cursor-pointer"
+                          aria-label={`Inspect case ${c.title}`}
                         >
                           <Eye className="h-3.5 w-3.5" />
-                          <span>View</span>
+                          <span>Review</span>
                         </button>
                       </td>
                     </tr>
@@ -281,34 +285,35 @@ export default function CaseHistoryPage() {
           </div>
         )}
 
-        {/* Forensic Case Inspector Modal */}
+        {/* Clinical Case Review Modal */}
         {selectedCase && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md" role="dialog" aria-modal="true" aria-labelledby="modal-case-title">
             <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-3xl border border-slate-800 bg-slate-900 p-6 shadow-2xl space-y-6">
               {/* Close Button */}
               <button
                 type="button"
                 onClick={() => setSelectedCase(null)}
                 className="absolute top-5 right-5 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer"
+                aria-label="Close case review modal"
               >
                 <X className="h-5 w-5" />
               </button>
 
               {/* Modal Header */}
               <div>
-                <span className="text-xs font-mono text-red-400 uppercase">
-                  Incident Forensics &bull; {selectedCase.id}
+                <span className="text-xs font-mono text-teal-400 uppercase">
+                  Case Review &bull; {selectedCase.id}
                 </span>
-                <h3 className="text-xl font-black text-white mt-1">
+                <h2 id="modal-case-title" className="font-serif text-xl font-bold text-white mt-1">
                   {selectedCase.title}
-                </h3>
+                </h2>
                 <div className="flex flex-wrap items-center gap-3 mt-2 text-xs text-slate-400">
                   <span className="flex items-center gap-1">
                     <MapPin className="h-3.5 w-3.5" />
                     {selectedCase.state_location}
                   </span>
                   <span>&bull;</span>
-                  <span className="flex items-center gap-1">
+                  <span className="flex items-center gap-1 font-mono">
                     <Clock className="h-3.5 w-3.5" />
                     {new Date(selectedCase.created_at).toLocaleString()}
                   </span>
@@ -327,30 +332,30 @@ export default function CaseHistoryPage() {
                   />
 
                   <div className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-2 text-xs">
-                    <h5 className="font-bold text-slate-300 uppercase tracking-wider mb-2">
+                    <h3 className="font-serif text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
                       Clinical Trauma Profile
-                    </h5>
+                    </h3>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Violence Indicators:</span>
-                      <span className="font-bold text-white">
+                      <span className="font-semibold text-white">
                         {selectedCase.trauma_analysis?.violence_indicators ? "YES" : "NO"}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Suicidal Ideation:</span>
-                      <span className="font-bold text-amber-400 font-mono">
+                      <span className="font-semibold text-amber-400 font-mono">
                         {((selectedCase.trauma_analysis?.suicidal_ideation || 0) * 100).toFixed(0)}%
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Intimidation Score:</span>
-                      <span className="font-bold text-slate-200 font-mono">
+                      <span className="font-semibold text-slate-200 font-mono">
                         {((selectedCase.trauma_analysis?.intimidation || 0) * 100).toFixed(0)}%
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-slate-400">Fear Intensity:</span>
-                      <span className="font-bold text-red-400 font-mono">
+                      <span className="font-semibold text-red-400 font-mono">
                         {((selectedCase.emotion_analysis?.fear || 0) * 100).toFixed(0)}%
                       </span>
                     </div>
@@ -361,8 +366,8 @@ export default function CaseHistoryPage() {
               {/* Statement Transcript */}
               {selectedCase.raw_text && (
                 <div className="p-4 rounded-2xl bg-slate-950/70 border border-slate-800">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    Recorded Incident Narrative:
+                  <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">
+                    Recorded Statement Narrative:
                   </span>
                   <p className="text-sm text-slate-200 leading-relaxed italic">
                     &quot;{selectedCase.raw_text}&quot;
@@ -377,18 +382,18 @@ export default function CaseHistoryPage() {
 
               {/* Dispatched Recommendations */}
               <div>
-                <h5 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-                  Prescribed Actions ({selectedCase.recommendations.length})
-                </h5>
+                <h3 className="font-serif text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                  Prescribed Safety Actions ({selectedCase.recommendations.length})
+                </h3>
                 <div className="space-y-2">
                   {selectedCase.recommendations.map((rec) => (
                     <div
                       key={rec.id}
                       className="p-3 rounded-xl bg-slate-950/60 border border-slate-800 flex items-start gap-2.5 text-xs"
                     >
-                      <CheckCircle className="h-4 w-4 text-emerald-400 shrink-0 mt-0.5" />
+                      <CheckCircle className="h-4 w-4 text-teal-400 shrink-0 mt-0.5" />
                       <div>
-                        <span className="font-bold text-indigo-300 uppercase mr-1">
+                        <span className="font-semibold text-teal-300 uppercase mr-1">
                           [{rec.action_type}]:
                         </span>
                         <span className="text-slate-300">{rec.description}</span>
